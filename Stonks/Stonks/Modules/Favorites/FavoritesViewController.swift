@@ -96,6 +96,8 @@ final class FavoritesViewController: UIViewController {
     }
 }
 
+// MARK: - FavoritesViewInput
+
 extension FavoritesViewController: FavoritesViewInput {
     func updateFiltered(with viewModels: [StockCardViewModel]) {
         self.filteredViewModels = viewModels
@@ -163,6 +165,20 @@ extension FavoritesViewController: UICollectionViewDataSource {
     }
 }
 
+// MARK: - UICollectionViewDelegate
+
+extension FavoritesViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let viewModel: StockCardViewModel
+        if isFiltered {
+            viewModel = filteredViewModels[indexPath.item]
+        } else {
+            viewModel = viewModels[indexPath.item]
+        }
+        output.onTapStock(viewModel)
+    }
+}
+
 // MARK: - StockCardDelegate
 
 extension FavoritesViewController: StockCardDelegate {
@@ -207,7 +223,6 @@ extension FavoritesViewController: StockCardDelegate {
 // MARK: UISearchResultsUpdating
 
 extension FavoritesViewController: UISearchResultsUpdating {
-    
     private func filterContentForSearchText(searchText: String){
         output.filter(stonks: viewModels, with: searchText.lowercased())
     }

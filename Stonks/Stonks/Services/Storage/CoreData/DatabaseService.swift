@@ -301,6 +301,7 @@ private extension Stock {
         self.companyName = stonk.quote.companyName
         self.price = NSDecimalNumber(value: stonk.quote.latestPrice ?? 0)
         self.logoURL = stonk.logo.url
+        self.currency = stonk.quote.currency
     }
 }
 
@@ -319,6 +320,7 @@ private extension Quote {
         self.companyName = MO.companyName ?? ""
         self.latestPrice = MO.price?.doubleValue
         self.change = MO.change?.doubleValue
+        self.currency = MO.currency
     }
 }
 

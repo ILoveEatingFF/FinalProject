@@ -28,6 +28,23 @@ final class FavoritesContainer {
 		presenter.moduleOutput = context.moduleOutput
 
 		interactor.output = presenter
+        
+        router.navigationControllerProvider = {[weak viewController] in
+            return viewController?.navigationController
+        }
+        
+        router.defaultsServiceProvider = { [context] in
+            return context.defaultsService
+        }
+        router.databaseServiceProvider = { [context] in
+            return context.databaseService
+        }
+        router.networkServiceProvider = { [context] in
+            return context.networkService
+        }
+        router.accessibilityServiceProvider = {[context] in
+            return context.accessibilityService
+        }
 
         return FavoritesContainer(view: viewController, input: presenter, router: router)
 	}

@@ -32,4 +32,8 @@ final class DefaultStorageService: StorageServiceProtocol {
         
         return try? decoder.decode(T.self, from: data)
     }
+    
+    func remove(for key: String) {
+        defaults.removeObject(forKey: key)
+    }
 }

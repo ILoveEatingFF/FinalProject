@@ -53,6 +53,17 @@ final class SegmentCollectionViewController: UICollectionViewController {
         return cell
     }
     
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        guard
+            let selectedIndex = collectionView.indexPathsForSelectedItems?.first,
+            selectedIndex != indexPath
+        else {
+            return false
+        }
+        
+        return true
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModels[indexPath.item].onTapSegment?()
         collectionView.collectionViewLayout.invalidateLayout()

@@ -13,18 +13,22 @@ protocol ProfileModuleInput {
 }
 
 protocol ProfileModuleOutput: class {
+    func didLogOut()
 }
 
 protocol ProfileViewInput: class {
 }
 
 protocol ProfileViewOutput: class {
+    func onTapLogOut()
 }
 
 protocol ProfileInteractorInput: class {
+    func logOut()
 }
 
 protocol ProfileInteractorOutput: class {
+    func didLogOut()
 }
 
 protocol ProfileRouterInput: class {

@@ -60,8 +60,18 @@ final class AppCoordinator: BaseCoordinator {
     
     
     private func setupProfile() {
-        let context = ProfileContext(moduleOutput: nil)
+        let context = ProfileContext(
+            moduleOutput: self,
+            defaultsService: serviceLocator.userDefaultsService
+        )
         let container = ProfileContainer.assemble(with: context)
         tabBarControllerBuilder.makeProfile(with: [container.viewController])
     }
+}
+
+extension AppCoordinator: ProfileModuleOutput {
+    func didLogOut() {
+        rootCoordinator?.auth()
+    }
+    
 }

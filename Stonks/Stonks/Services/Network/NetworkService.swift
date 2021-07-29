@@ -39,6 +39,11 @@ final class NetworkService {
 }
 
 extension NetworkService: StockNetworkServiceProtocol {
+    func lookupSymbol(with text: String, completion: @escaping (Result<SymbolsLookup, Error>) -> Void) {
+        let url = URLFactory.symbolsLookUp(text: text)
+        baseRequest(url: url, completion: completion)
+    }
+    
     func loadNews(with symbol: String, startDate: Date, endDate: Date, completion: @escaping (Result<[News], Error>) -> Void) {
         let url = URLFactory.news(symbol: symbol, startDate: startDate, endDate: endDate)
         baseRequest(url: url, completion: completion)

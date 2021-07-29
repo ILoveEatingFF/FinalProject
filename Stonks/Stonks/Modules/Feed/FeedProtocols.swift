@@ -17,16 +17,17 @@ protocol FeedModuleOutput: class {
 
 protocol FeedViewInput: class {
     func update(with viewModels: [StockCardViewModel])
+    func updateSearch(with viewModels: [StockCardViewModel])
 }
 
 protocol FeedViewOutput: class {
     var hasNextPage: Bool { get }
     func didLoadView()
     func willViewAppear()
-    func reload()
     func didSelectStock(_ stock: StockCardViewModel)
-    func willDisplay(at index: Int, cellCount: Int)
+    func willDisplay(at index: Int, cellCount: Int, isSearched: Bool)
     func didTapOnFavorite(symbol: String, isFavorite: Bool)
+    func searchSymbols(_ searchText: String)
 }
 
 protocol FeedInteractorInput: class {
@@ -34,11 +35,13 @@ protocol FeedInteractorInput: class {
     func loadNext()
     func reloadFavorites()
     func saveOrDeleteFavorite(symbol: String, isFavorite: Bool)
+    func loadStonks(with searchText: String)
 }
 
 protocol FeedInteractorOutput: class {
     func didLoad(_ stonks: [StonkDTO], hasNextPage: Bool)
-    func didLoadNextBatch(_ stonks: [StonkDTO], hasNextPage: Bool)
+    func didLoadSearch(_ stonks: [StonkDTO])
+    func didEncounterError(_ error: Error)
 }
 
 protocol FeedRouterInput: class {

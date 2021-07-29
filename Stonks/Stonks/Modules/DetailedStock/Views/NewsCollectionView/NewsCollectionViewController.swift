@@ -28,8 +28,13 @@ final class NewsCollectionViewController: UICollectionViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        self.layout.estimatedItemSize = CGSize(width: self.collectionView.frame.width, height: 1.0)
+        self.layout.estimatedItemSize = CGSize(width: self.collectionView.frame.width, height: 50)
         self.layout.itemSize = CGSize(width: self.collectionView.frame.width, height: UICollectionViewFlowLayout.automaticSize.height)
+    }
+    
+    func update(with viewModels: [NewsViewModel]) {
+        self.viewModels = viewModels
+        collectionView.reloadData()
     }
     
     private func setup() {
@@ -52,7 +57,7 @@ final class NewsCollectionViewController: UICollectionViewController {
         }
         let viewModel = viewModels[indexPath.item]
         
-        cell.update(with: viewModels[indexPath.item])
+        cell.update(with: viewModel)
 //        imageLoader.load(url: URL(string: viewModel.image)) { [weak cell, viewModel] image in
 //            guard let cell = cell else { return }
 //            if cell.currentImageURL == viewModel.image {
@@ -63,15 +68,6 @@ final class NewsCollectionViewController: UICollectionViewController {
         return cell
     }
 }
-
-//extension NewsCollectionViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let part: CGFloat = 0.5
-//        let width = collectionView.frame.width
-//        let height = width * part
-//        return CGSize(width: width, height: height)
-//    }
-//}
 
 private extension NewsCollectionViewController {
     enum Constants {

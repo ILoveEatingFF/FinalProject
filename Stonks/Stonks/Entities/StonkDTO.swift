@@ -36,7 +36,6 @@ struct StonkResponse: Codable {
             }
             
             self.stonks = stonks
-//            print(stonks)
         }
 }
 
@@ -56,4 +55,5 @@ struct Quote: Codable, Hashable {
     let companyName: String
     let latestPrice: Double?
     let change: Double?
+    let currency: String?
 }

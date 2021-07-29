@@ -4,7 +4,8 @@ enum URLFactory {
     private static let finnhubKey = "c1avt0748v6rcdq9sv6g"
     private static let finnhubParams = ApiParams(scheme: "https", host: "finnhub.io", apiKeyName: "token")
     
-    private static let iexKey = "pk_f2e614e8d8e140e6b4ef1387f7ff86bf"
+//    private static let iexKey = "pk_f2e614e8d8e140e6b4ef1387f7ff86bf"
+    private static let iexKey = "pk_5460816a0c934baf999a677499c3c309"
     private static let iexParams = ApiParams(scheme: "https", host: "cloud.iexapis.com", apiKeyName: "token")
     
     private static let iexSandboxKey = "Tpk_7f07bda7bbd2468ea3ac6c241173e45f"
@@ -68,6 +69,14 @@ enum URLFactory {
             URLQueryItem(name: "from", value: dateFormatter.string(from: startDate)),
             URLQueryItem(name: "to", value: dateFormatter.string(from: endDate))
         ]
+        baseComp.queryItems?.append(contentsOf: params)
+        return baseComp.url
+    }
+    
+    static func symbolsLookUp(text: String) -> URL? {
+        var baseComp = buildBaseComponents(ofType: .finnhub)
+        baseComp.path = "/api/v1/search"
+        let params = [URLQueryItem(name: "q", value: text)]
         baseComp.queryItems?.append(contentsOf: params)
         return baseComp.url
     }

@@ -15,7 +15,7 @@ final class ProfileContainer {
 
 	static func assemble(with context: ProfileContext) -> ProfileContainer {
         let router = ProfileRouter()
-        let interactor = ProfileInteractor()
+        let interactor = ProfileInteractor(defaultsService: context.defaultsService)
         let presenter = ProfilePresenter(router: router, interactor: interactor)
 		let viewController = ProfileViewController(output: presenter)
 
@@ -36,4 +36,5 @@ final class ProfileContainer {
 
 struct ProfileContext {
 	weak var moduleOutput: ProfileModuleOutput?
+    let defaultsService: StorageServiceProtocol
 }

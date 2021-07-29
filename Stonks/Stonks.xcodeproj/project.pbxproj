@@ -14,6 +14,9 @@
 		2428B2F626B1986C002E14D9 /* NewsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2428B2F526B1986C002E14D9 /* NewsCollectionViewCell.swift */; };
 		2428B2FE26B1A06F002E14D9 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2428B2FD26B1A06F002E14D9 /* News.swift */; };
 		2428B30626B1B5C9002E14D9 /* NewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2428B30526B1B5C9002E14D9 /* NewsViewModel.swift */; };
+		2428B31126B2DF55002E14D9 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2428B31026B2DF54002E14D9 /* UIViewControllerExtension.swift */; };
+		2428B31626B322C8002E14D9 /* CurrencyConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2428B31526B322C8002E14D9 /* CurrencyConstants.swift */; };
+		2428B32D26B32A55002E14D9 /* Stock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2428B32B26B32A55002E14D9 /* Stock+CoreDataProperties.swift */; };
 		242A316F26A0B0840076843D /* BaseRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242A316E26A0B0840076843D /* BaseRouter.swift */; };
 		242A317926A0B1AB0076843D /* SignUpPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242A317326A0B1AB0076843D /* SignUpPresenter.swift */; };
 		242A317A26A0B1AB0076843D /* SignUpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242A317426A0B1AB0076843D /* SignUpRouter.swift */; };
@@ -93,7 +96,6 @@
 		24E8A60026ADC066008EB8BD /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E8A5FA26ADC066008EB8BD /* User+CoreDataClass.swift */; };
 		24E8A60126ADC066008EB8BD /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E8A5FB26ADC066008EB8BD /* User+CoreDataProperties.swift */; };
 		24E8A60226ADC066008EB8BD /* Stock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E8A5FC26ADC066008EB8BD /* Stock+CoreDataClass.swift */; };
-		24E8A60326ADC066008EB8BD /* Stock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E8A5FD26ADC066008EB8BD /* Stock+CoreDataProperties.swift */; };
 		24E8A61D26AF4B11008EB8BD /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E8A61C26AF4B11008EB8BD /* DoubleExtension.swift */; };
 		24E8A62326AF582F008EB8BD /* SegmentCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E8A62226AF582F008EB8BD /* SegmentCollectionViewController.swift */; };
 		24E8A62C26AF584F008EB8BD /* SegmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E8A62B26AF584F008EB8BD /* SegmentViewModel.swift */; };
@@ -131,6 +133,9 @@
 		2428B2F526B1986C002E14D9 /* NewsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCollectionViewCell.swift; sourceTree = "<group>"; };
 		2428B2FD26B1A06F002E14D9 /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		2428B30526B1B5C9002E14D9 /* NewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewModel.swift; sourceTree = "<group>"; };
+		2428B31026B2DF54002E14D9 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		2428B31526B322C8002E14D9 /* CurrencyConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConstants.swift; sourceTree = "<group>"; };
+		2428B32B26B32A55002E14D9 /* Stock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Stock+CoreDataProperties.swift"; path = "../../../Stock+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		242A316E26A0B0840076843D /* BaseRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRouter.swift; sourceTree = "<group>"; };
 		242A317326A0B1AB0076843D /* SignUpPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPresenter.swift; sourceTree = "<group>"; };
 		242A317426A0B1AB0076843D /* SignUpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpRouter.swift; sourceTree = "<group>"; };
@@ -216,7 +221,6 @@
 		24E8A5FA26ADC066008EB8BD /* User+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
 		24E8A5FB26ADC066008EB8BD /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		24E8A5FC26ADC066008EB8BD /* Stock+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataClass.swift"; sourceTree = "<group>"; };
-		24E8A5FD26ADC066008EB8BD /* Stock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		24E8A61C26AF4B11008EB8BD /* DoubleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
 		24E8A62226AF582F008EB8BD /* SegmentCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentCollectionViewController.swift; sourceTree = "<group>"; };
 		24E8A62B26AF584F008EB8BD /* SegmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentViewModel.swift; sourceTree = "<group>"; };
@@ -352,6 +356,7 @@
 			children = (
 				242A325026A840B20076843D /* KeychainConstants.swift */,
 				242A325826A8411B0076843D /* DefaultsConstants.swift */,
+				2428B31526B322C8002E14D9 /* CurrencyConstants.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -524,6 +529,7 @@
 				24E8A61C26AF4B11008EB8BD /* DoubleExtension.swift */,
 				24E8A65A26B07E2D008EB8BD /* UniqueIdentifier.swift */,
 				24E8A65F26B0B9BC008EB8BD /* NotificationExtension.swift */,
+				2428B31026B2DF54002E14D9 /* UIViewControllerExtension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -595,7 +601,7 @@
 				24E8A5FA26ADC066008EB8BD /* User+CoreDataClass.swift */,
 				24E8A5FB26ADC066008EB8BD /* User+CoreDataProperties.swift */,
 				24E8A5FC26ADC066008EB8BD /* Stock+CoreDataClass.swift */,
-				24E8A5FD26ADC066008EB8BD /* Stock+CoreDataProperties.swift */,
+				2428B32B26B32A55002E14D9 /* Stock+CoreDataProperties.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -785,7 +791,6 @@
 				242A31D426A5E7B70076843D /* AppCoordinator.swift in Sources */,
 				242A317D26A0B1AB0076843D /* SignUpInteractor.swift in Sources */,
 				248AE30726A9ABCE00D1EFC8 /* Symbols.swift in Sources */,
-				24E8A60326ADC066008EB8BD /* Stock+CoreDataProperties.swift in Sources */,
 				242FA88126A097DC0000BFF5 /* LoginProtocols.swift in Sources */,
 				242FA87E26A097DC0000BFF5 /* LoginPresenter.swift in Sources */,
 				242FA88326A097DC0000BFF5 /* LoginContainer.swift in Sources */,
@@ -799,12 +804,14 @@
 				242A322726A719090076843D /* FeedPresenter.swift in Sources */,
 				242FA88C26A0A0960000BFF5 /* PaddingTextField.swift in Sources */,
 				24E8A5A826AC48D2008EB8BD /* DetailedStockProtocols.swift in Sources */,
+				2428B32D26B32A55002E14D9 /* Stock+CoreDataProperties.swift in Sources */,
 				24E8A5A626AC48D2008EB8BD /* DetailedStockRouter.swift in Sources */,
 				242A320A26A718C10076843D /* ProfileInteractor.swift in Sources */,
 				242A31C126A5ADD70076843D /* KeychainService.swift in Sources */,
 				24E8A5C126AD7EB6008EB8BD /* DatabaseService.swift in Sources */,
 				242A318326A187080076843D /* ErrorLabel.swift in Sources */,
 				2428B30626B1B5C9002E14D9 /* NewsViewModel.swift in Sources */,
+				2428B31626B322C8002E14D9 /* CurrencyConstants.swift in Sources */,
 				24E8A5A926AC48D2008EB8BD /* DetailedStockInteractor.swift in Sources */,
 				242A321826A718FE0076843D /* FavoritesProtocols.swift in Sources */,
 				242A317926A0B1AB0076843D /* SignUpPresenter.swift in Sources */,
@@ -828,6 +835,7 @@
 				242A322B26A719090076843D /* FeedInteractor.swift in Sources */,
 				242A31D926A5E7C30076843D /* AuthCoordinator.swift in Sources */,
 				242A321526A718FE0076843D /* FavoritesPresenter.swift in Sources */,
+				2428B31126B2DF55002E14D9 /* UIViewControllerExtension.swift in Sources */,
 				248AE2E926A96CC200D1EFC8 /* StockCardCell.swift in Sources */,
 				242A317B26A0B1AB0076843D /* SignUpViewController.swift in Sources */,
 				242A317A26A0B1AB0076843D /* SignUpRouter.swift in Sources */,

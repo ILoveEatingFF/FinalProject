@@ -14,6 +14,18 @@ final class DetailedStockViewController: UIViewController {
     }
     
     private let stock: StockCardViewModel
+    
+    private lazy var newsViewController: NewsCollectionViewController = {
+        let imageLoader: ImageLoaderProtocol = ImageLoader()
+        let collectionViewLayout = UICollectionViewFlowLayout()
+        collectionViewLayout.scrollDirection = .vertical
+        collectionViewLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        collectionViewLayout.minimumLineSpacing = 18
+        let vc = NewsCollectionViewController(viewModels: [], imageLoader: imageLoader, collectionViewLayout: collectionViewLayout)
+        return vc
+    }()
+    
+    private lazy var childControllersForSegment: [UIViewController] = [newsViewController]
 
     init(output: DetailedStockViewOutput, stock: StockCardViewModel) {
         self.output = output
@@ -83,9 +95,17 @@ final class DetailedStockViewController: UIViewController {
     
     private func setupSegmentViewModels() -> [SegmentViewModel] {
         var viewModels: [SegmentViewModel] = []
-        let graphViewModel = SegmentViewModel(name: Segments.graph.rawValue, onTapSegment: nil)
+        let graphViewModel = SegmentViewModel(name: Segments.graph.rawValue) { [weak self] in
+            guard let self = self else { return }
+            self.childControllersForSegment.forEach {
+                $0.remove()
+            }
+        }
         let newsViewModels = SegmentViewModel(name: Segments.news.rawValue) { [weak self] in
             guard let self = self else { return }
+            self.childControllersForSegment.forEach {
+                $0.remove()
+            }
             self.onTapNews()
         }
         viewModels.append(graphViewModel)
@@ -111,17 +131,9 @@ final class DetailedStockViewController: UIViewController {
     }
     
     private func configureNewsViewController(viewModels: [NewsViewModel]) {
-        let imageLoader: ImageLoaderProtocol = ImageLoader()
-        let collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.scrollDirection = .vertical
-        collectionViewLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        let newsCollectionViewController = NewsCollectionViewController(viewModels: viewModels, imageLoader: imageLoader, collectionViewLayout: collectionViewLayout)
-        
-        addChild(newsCollectionViewController)
-        view.addSubview(newsCollectionViewController.view)
-        newsCollectionViewController.didMove(toParent: self)
-        
-        setupNewsConstraints(newsCollectionViewController.view)
+        newsViewController.update(with: viewModels)
+        add(newsViewController)
+        setupNewsConstraints(newsViewController.view)
     }
     
     private func setupNewsConstraints(_ view: UIView) {

@@ -24,6 +24,7 @@ protocol FavoritesViewOutput: class {
     func didLoadView()
     func willViewAppear()
     func onTapFavorite(with symbol: String)
+    func onTapStock(_ stock: StockCardViewModel)
     func filter(stonks: [StockCardViewModel], with searchText: String)
 }
 
@@ -38,4 +39,5 @@ protocol FavoritesInteractorOutput: class {
 }
 
 protocol FavoritesRouterInput: class {
+    func showDetailedStock(_ stock: StockCardViewModel)
 }

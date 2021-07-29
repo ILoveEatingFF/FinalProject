@@ -25,7 +25,15 @@ extension ProfilePresenter: ProfileModuleInput {
 }
 
 extension ProfilePresenter: ProfileViewOutput {
+    func onTapLogOut() {
+        interactor.logOut()
+    }
+    
 }
 
 extension ProfilePresenter: ProfileInteractorOutput {
+    func didLogOut() {
+        moduleOutput?.didLogOut()
+    }
+    
 }

@@ -22,6 +22,7 @@ extension Stock {
     @NSManaged public var logoURL: String?
     @NSManaged public var price: NSDecimalNumber?
     @NSManaged public var symbol: String?
+    @NSManaged public var currency: String?
     @NSManaged public var fundIndex: NSSet?
     @NSManaged public var users: NSSet?
 

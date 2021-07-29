@@ -19,6 +19,8 @@ final class FeedInteractor {
     private var companySymbols: [String] = []
     private var companyStonks: [StonkDTO] = []
     
+    private var searchCompanySymbols: [String] = []
+    
     private let stockQueue = DispatchQueue(label: "com.queue.stock.lizogub", qos: .userInteractive, attributes: .concurrent)
     
     private var page = Constants.initialPage
@@ -49,6 +51,36 @@ final class FeedInteractor {
 }
 
 extension FeedInteractor: FeedInteractorInput {
+    func loadStonks(with searchText: String) {
+        let group = DispatchGroup()
+        
+        group.enter()
+        networkService.lookupSymbol(with: searchText) { result in
+            switch result {
+            case .success(let symbolResponse):
+                let result = symbolResponse.result.map {
+                    $0.symbol
+                }
+                self.searchSymbols = result
+            case .failure(let error):
+                print(error)
+            }
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            self.networkService.loadStonks(with: self.searchSymbols, page: 1) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let stonkResponse):
+                        self.output?.didLoadSearch(stonkResponse.stonks)
+                    case .failure(let error):
+                        self.output?.didEncounterError(error)
+                    }
+                }
+            }
+        }
+    }
     
     func reloadFavorites() {
         self.stocks = updateStonksFavorite(stonks: self.stocks)
@@ -71,7 +103,9 @@ extension FeedInteractor: FeedInteractorInput {
                     self.databaseService.update(stonks: self.stocks, marketIndex: self.currentFundIndex)
                 }
             case .failure(let error):
-                print(error)
+                DispatchQueue.main.async {
+                    self.output?.didEncounterError(error)
+                }
             }
         }
     }
@@ -114,6 +148,9 @@ extension FeedInteractor: FeedInteractorInput {
             group.leave()
         }
         
+//         Метод может проваливаться в ошибку даже при хорошей сети,
+//        так как в iex cloud api могли закончиться кредиты на запросы
+//        в таком случае лучше заменить iex api key в URLFactory
         group.notify(queue: .main) {
             self.networkService.loadStonks(with: self.symbols, page: self.page) { result in
                 switch result {
@@ -164,6 +201,19 @@ private extension FeedInteractor {
     }
     
     var symbols: [String] {
+        get {
+            stockQueue.sync {
+                return self.searchCompanySymbols
+            }
+        }
+        set {
+            stockQueue.async(flags: .barrier) {
+                self.searchCompanySymbols = newValue
+            }
+        }
+    }
+    
+    var searchSymbols: [String] {
         get {
             stockQueue.sync {
                 return self.companySymbols

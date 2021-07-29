@@ -38,6 +38,10 @@ extension FavoritesPresenter: FavoritesModuleInput {
 }
 
 extension FavoritesPresenter: FavoritesViewOutput {
+    func onTapStock(_ stock: StockCardViewModel) {
+        router.showDetailedStock(stock)
+    }
+    
     func filter(stonks: [StockCardViewModel], with searchText: String) {
         var result: [StockCardViewModel] = []
         stonks.forEach {
@@ -77,6 +81,7 @@ private extension FavoritesPresenter {
     func makeViewModels(from stonks: [StonkDTO]) -> [StockCardViewModel] {
         var models: [StockCardViewModel] = []
         models = stonks.enumerated().map { (index, stonk) -> StockCardViewModel in
+            let currency = currencyDictionary[stonk.quote.currency ?? ""] ?? ""
             let changeColor: StockCardViewModel.ChangeColor = stonk.quote.change ?? 0 < 0 ? .red : .green
             let price: String = stonk.quote.latestPrice != nil ? String(stonk.quote.latestPrice!.roundToDecimal(3)) : ""
             let change: String = stonk.quote.change != nil ? String(stonk.quote.change!.roundToDecimal(3)) : ""
@@ -84,8 +89,8 @@ private extension FavoritesPresenter {
             return StockCardViewModel(
                 symbol: stonk.quote.symbol,
                 description: stonk.quote.companyName,
-                price: price ,
-                change: change,
+                price: currency + price,
+                change: currency + change,
                 logo: stonk.logo.url ?? "",
                 changeColor: changeColor,
                 backgroundColor: index % 2 == 0 ? .lightGray : .lightBlue,

@@ -22,6 +22,15 @@ final class FeedViewController: UIViewController {
     private let activityIndicator = UIActivityIndicatorView()
     
     private var viewModels: [StockCardViewModel] = []
+    private var searchViewModels: [StockCardViewModel] = []
+    
+    private var isSearchBarEmpty: Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+      }
+    
+    var isSearched: Bool {
+        !isSearchBarEmpty && searchController.isActive
+    }
 
     // MARK: - Lifecycle
     
@@ -74,9 +83,13 @@ final class FeedViewController: UIViewController {
     private func setupSearch() {
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
+        
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Поиск"
-//        searchController.searchResultsUpdater = self
-//        searchController.delegate = self
+        searchController.searchBar.delegate = self
+        
+        definesPresentationContext = true
     }
     
     private func setupActivityIndicators() {
@@ -106,6 +119,11 @@ final class FeedViewController: UIViewController {
 // MARK: - FeedViewInput
 
 extension FeedViewController: FeedViewInput {
+    func updateSearch(with viewModels: [StockCardViewModel]) {
+        searchViewModels = viewModels
+        collectionView.reloadData()
+    }
+    
     func update(with viewModels: [StockCardViewModel]) {
         self.viewModels = viewModels
         activityIndicator.stopAnimating()
@@ -117,7 +135,6 @@ extension FeedViewController: FeedViewInput {
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension FeedViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -148,14 +165,19 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
 
 extension FeedViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModels.count
+ex        isSearched ? searchViewModels.count : viewModels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StockCardCell.identifier, for: indexPath) as? StockCardCell else {
             return UICollectionViewCell()
         }
-        let viewModel = viewModels[indexPath.item]
+        let viewModel: StockCardViewModel
+        if isSearched {
+            viewModel = searchViewModels[indexPath.item]
+        } else {
+            viewModel = viewModels[indexPath.item]
+        }
         cell.update(with: viewModel)
         imageLoader.load(url: URL(string: viewModel.logo)) { [weak cell, viewModel] image in
             guard let cell = cell else { return }
@@ -171,7 +193,11 @@ extension FeedViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionFooter,
            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FooterLoaderView.identifier, for: indexPath) as? FooterLoaderView {
-            output.hasNextPage ? footer.startLoading() : footer.endLoading()
+            if !isSearched && output.hasNextPage {
+                footer.startLoading()
+            } else {
+                footer.endLoading()
+            }
             return footer
         }
         return UICollectionReusableView()
@@ -182,11 +208,17 @@ extension FeedViewController: UICollectionViewDataSource {
 
 extension FeedViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        output.didSelectStock(viewModels[indexPath.item])
+        let viewModel: StockCardViewModel
+        if isSearched {
+            viewModel = searchViewModels[indexPath.item]
+        } else {
+            viewModel = viewModels[indexPath.item]
+        }
+        output.didSelectStock(viewModel)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        output.willDisplay(at: indexPath.item, cellCount: viewModels.count)
+        output.willDisplay(at: indexPath.item, cellCount: viewModels.count, isSearched: isSearched)
     }
 }
 
@@ -195,14 +227,63 @@ extension FeedViewController: UICollectionViewDelegate {
 extension FeedViewController: StockCardDelegate {
     func onTapFavorite(_ cell: StockCardCell, isFavorite: Bool) {
         guard let indexPath = collectionView.indexPath(for: cell) else {return}
-        viewModels[indexPath.item].isFavorite = isFavorite
-        output.didTapOnFavorite(symbol: viewModels[indexPath.item].symbol, isFavorite: isFavorite)
+        let symbolToFavorite: String
+        if isSearched {
+            symbolToFavorite = searchViewModels[indexPath.item].symbol
+            searchViewModels[indexPath.item].isFavorite = isFavorite
+            if let index = findViewModelIndex(viewModels, with: symbolToFavorite) {
+                viewModels[index].isFavorite = isFavorite
+            }
+        } else {
+            symbolToFavorite = viewModels[indexPath.item].symbol
+            viewModels[indexPath.item].isFavorite = isFavorite
+        }
+        output.didTapOnFavorite(symbol: symbolToFavorite, isFavorite: isFavorite)
         
         NotificationCenter.default.post(
             name: .didChangeFavorite,
             object: self,
             userInfo: ["symbol": viewModels[indexPath.item].symbol]
         )
+    }
+    
+    private func findViewModelIndex(_ viewModels: [StockCardViewModel], with symbol: String) -> Int? {
+        var index: Int? = nil
+        for (i, viewModel) in viewModels.enumerated() {
+            if viewModel.symbol == symbol {
+                index = i
+                break
+            }
+        }
+        return index
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+
+extension FeedViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(searchSymbols), object: nil)
+        self.perform(#selector(searchSymbols), with: nil, afterDelay: 0.5)
+        searchSymbols(searchController.searchBar.text!)
+    }
+    
+    @objc
+    private func searchSymbols(_ searchText: String) {
+        output.searchSymbols(searchText)
+    }
+}
+
+// MARK: - UISearchBarDelegate
+
+extension FeedViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let searchText = searchBar.text!
+        searchSymbols(searchText)
+    }
+        
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        collectionView.reloadData()
     }
 }
 

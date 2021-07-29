@@ -66,6 +66,10 @@ final class NewsCollectionViewCell: UICollectionViewCell {
         
         summaryLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         summaryLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
+//        backgroundColor = .lightGray
+//        layer.cornerRadius = 8
+        clipsToBounds = true
     }
     
     private func setupConstraints() {

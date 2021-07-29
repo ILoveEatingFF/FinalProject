@@ -8,6 +8,7 @@
     <entity name="Stock" representedClassName="Stock" syncable="YES">
         <attribute name="change" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
         <attribute name="companyName" optional="YES" attributeType="String"/>
+        <attribute name="currency" optional="YES" attributeType="String"/>
         <attribute name="logo" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="logoURL" optional="YES" attributeType="String"/>
         <attribute name="price" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
@@ -21,7 +22,7 @@
     </entity>
     <elements>
         <element name="FundIndex" positionX="-38.2734375" positionY="-41.00390625" width="128" height="88"/>
-        <element name="Stock" positionX="357.3359375" positionY="-44.28125" width="128" height="163"/>
+        <element name="Stock" positionX="357.3359375" positionY="-44.28125" width="128" height="178"/>
         <element name="User" positionX="-36.921875" positionY="147.3046875" width="128" height="73"/>
     </elements>
 </model>

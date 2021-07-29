@@ -18,6 +18,7 @@ final class FeedPresenter {
     private var isLoading = false
     private(set) var hasNextPage = false
     private var shouldReloadFavorites = false
+    private var isSearched = false
     
     init(router: FeedRouterInput, interactor: FeedInteractorInput) {
         self.router = router
@@ -40,6 +41,11 @@ extension FeedPresenter: FeedModuleInput {
 }
 
 extension FeedPresenter: FeedViewOutput {
+    func searchSymbols(_ searchText: String) {
+        guard !searchText.isEmpty else { return }
+        interactor.loadStonks(with: searchText)
+    }
+    
     func willViewAppear() {
         if shouldReloadFavorites {
             interactor.reloadFavorites()
@@ -50,24 +56,21 @@ extension FeedPresenter: FeedViewOutput {
         interactor.saveOrDeleteFavorite(symbol: symbol, isFavorite: isFavorite)
     }
     
-    func willDisplay(at index: Int, cellCount: Int) {
+    func willDisplay(at index: Int, cellCount: Int, isSearched: Bool) {
         guard
             index == cellCount - 1,
             !isLoading,
+            !isSearched,
             hasNextPage
         else {
             return
         }
         interactor.loadNext()
+        isLoading = true
     }
     
     func didSelectStock(_ stock: StockCardViewModel) {
         router.showDetailedStock(stock)
-    }
-    
-    
-    func reload() {
-        
     }
     
     func didLoadView() {
@@ -80,8 +83,13 @@ extension FeedPresenter: FeedViewOutput {
 }
 
 extension FeedPresenter: FeedInteractorOutput {
-    func didLoadNextBatch(_ stonks: [StonkDTO], hasNextPage: Bool) {
-        self.hasNextPage = hasNextPage
+    func didEncounterError(_ error: Error) {
+        isLoading = false
+    }
+    
+    func didLoadSearch(_ stonks: [StonkDTO]) {
+        let viewModels = makeViewModels(from: stonks)
+        view?.updateSearch(with: viewModels)
     }
     
     func didLoad(_ stonks: [StonkDTO], hasNextPage: Bool) {
@@ -97,6 +105,7 @@ private extension FeedPresenter {
     func makeViewModels(from stonks: [StonkDTO]) -> [StockCardViewModel] {
         var models: [StockCardViewModel] = []
         models = stonks.enumerated().map { (index, stonk) -> StockCardViewModel in
+            let currency = currencyDictionary[stonk.quote.currency ?? ""] ?? ""
             let changeColor: StockCardViewModel.ChangeColor = stonk.quote.change ?? 0 < 0 ? .red : .green
             let price: String = stonk.quote.latestPrice != nil ? String(stonk.quote.latestPrice!.roundToDecimal(3)) : ""
             let change: String = stonk.quote.change != nil ? String(stonk.quote.change!.roundToDecimal(3)) : ""
@@ -104,8 +113,8 @@ private extension FeedPresenter {
             return StockCardViewModel(
                 symbol: stonk.quote.symbol,
                 description: stonk.quote.companyName,
-                price: price ,
-                change: change,
+                price: currency + price,
+                change: currency + change,
                 logo: stonk.logo.url ?? "",
                 changeColor: changeColor,
                 backgroundColor: index % 2 == 0 ? .lightGray : .lightBlue,

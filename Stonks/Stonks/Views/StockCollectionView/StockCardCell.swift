@@ -115,6 +115,9 @@ final class StockCardCell: UICollectionViewCell {
         favHeightConstraint.priority = UILayoutPriority(rawValue: 999)
         favWidthConstraint.priority = UILayoutPriority(rawValue: 999)
         [favWidthConstraint, favHeightConstraint].forEach {$0.isActive = true}
+        
+        priceLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        changeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         NSLayoutConstraint.activate([
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -136,7 +139,6 @@ final class StockCardCell: UICollectionViewCell {
             rightStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12.0),
             rightStack.topAnchor.constraint(equalTo: middleStack.topAnchor),
             rightStack.bottomAnchor.constraint(equalTo: middleStack.bottomAnchor),
-
         ])
     }
 

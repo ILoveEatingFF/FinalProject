@@ -6,6 +6,7 @@ protocol StockNetworkServiceProtocol {
     func loadStonks(with symbols: [String], page: Int, completion: @escaping (Result<StonkResponse, Error>) -> Void)
     func loadNews(with symbol: String, lastNews: Int, completion: @escaping (Result<[News], Error>) -> Void)
     func loadNews(with symbol: String, startDate: Date, endDate: Date, completion: @escaping (Result<[News], Error>) -> Void)
+    func lookupSymbol(with text: String, completion: @escaping (Result<SymbolsLookup, Error>) -> Void)
 }
 
 struct ApiParams {
