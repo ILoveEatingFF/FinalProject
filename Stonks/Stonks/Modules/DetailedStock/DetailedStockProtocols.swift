@@ -14,7 +14,8 @@ protocol DetailedStockViewInput: class {
 
 protocol DetailedStockViewOutput: class {
     func didTapOnFavorite(symbol: String, isFavorite: Bool)
-    func didTapNews(symbol: String)
+    func didTapNewsSegment(symbol: String)
+    func didTapNewsItem(_ url: String)
 }
 
 protocol DetailedStockInteractorInput: class {
@@ -28,4 +29,5 @@ protocol DetailedStockInteractorOutput: class {
 }
 
 protocol DetailedStockRouterInput: class {
+    func showNews(with url: String)
 }

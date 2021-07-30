@@ -20,6 +20,7 @@ final class FeedInteractor {
     private var companyStonks: [StonkDTO] = []
     
     private var searchCompanySymbols: [String] = []
+    private var searchCompanyStonks: [StonkDTO] = []
     
     private let stockQueue = DispatchQueue(label: "com.queue.stock.lizogub", qos: .userInteractive, attributes: .concurrent)
     
@@ -70,11 +71,15 @@ extension FeedInteractor: FeedInteractorInput {
         
         group.notify(queue: .main) {
             self.networkService.loadStonks(with: self.searchSymbols, page: 1) { result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let stonkResponse):
-                        self.output?.didLoadSearch(stonkResponse.stonks)
-                    case .failure(let error):
+                switch result {
+                case .success(let stonkResponse):
+                    self.searchStocks = self.updateStonksFavorite(stonks: stonkResponse.stonks)
+                    self.databaseService.update(stonks: stonkResponse.stonks, marketIndex: nil)
+                    DispatchQueue.main.async {
+                        self.output?.didLoadSearch(self.searchStocks)
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
                         self.output?.didEncounterError(error)
                     }
                 }
@@ -84,9 +89,11 @@ extension FeedInteractor: FeedInteractorInput {
     
     func reloadFavorites() {
         self.stocks = updateStonksFavorite(stonks: self.stocks)
+        self.searchStocks = updateStonksFavorite(stonks: self.searchStocks)
         let hasNextPage = self.stocks.count < self.symbols.count
         DispatchQueue.main.async {
             self.output?.didLoad(self.stocks, hasNextPage: hasNextPage)
+            self.output?.didLoadSearch(self.searchStocks)
         }
     }
     
@@ -222,6 +229,19 @@ private extension FeedInteractor {
         set {
             stockQueue.async(flags: .barrier) {
                 self.companySymbols = newValue
+            }
+        }
+    }
+    
+    var searchStocks: [StonkDTO] {
+        get {
+            stockQueue.sync {
+                return self.searchCompanyStonks
+            }
+        }
+        set {
+            stockQueue.async(flags: .barrier) {
+                self.searchCompanyStonks = newValue
             }
         }
     }

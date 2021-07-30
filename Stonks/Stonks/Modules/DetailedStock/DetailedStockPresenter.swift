@@ -43,7 +43,11 @@ extension DetailedStockPresenter: DetailedStockModuleInput {
 }
 
 extension DetailedStockPresenter: DetailedStockViewOutput {
-    func didTapNews(symbol: String) {
+    func didTapNewsItem(_ url: String) {
+        router.showNews(with: url)
+    }
+    
+    func didTapNewsSegment(symbol: String) {
         interactor.loadNews(symbol: symbol, lastNews: 50)
     }
     

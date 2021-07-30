@@ -53,7 +53,7 @@ enum URLFactory {
     }
     
     static func news(symbol: String, last: Int) -> URL? {
-        var baseComp = buildBaseComponents(ofType: .iexSandbox)
+        var baseComp = buildBaseComponents(ofType: .iex)
         baseComp.path = "/stable/stock/\(symbol)/news/last/\(last)"
         
         return baseComp.url

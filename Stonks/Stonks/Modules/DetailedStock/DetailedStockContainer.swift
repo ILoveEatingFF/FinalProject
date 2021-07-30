@@ -24,6 +24,10 @@ final class DetailedStockContainer {
 		presenter.moduleOutput = context.moduleOutput
 
 		interactor.output = presenter
+        
+        router.navigationControllerProvider = {[weak viewController] in
+            viewController?.navigationController
+        }
 
         return DetailedStockContainer(view: viewController, input: presenter, router: router)
 	}

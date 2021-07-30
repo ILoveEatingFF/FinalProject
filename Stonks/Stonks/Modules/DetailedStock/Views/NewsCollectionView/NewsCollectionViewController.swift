@@ -1,6 +1,12 @@
 import UIKit
 
+protocol NewsDelegate: class {
+    func didTapOnNews(_ newsUrl: String)
+}
+
 final class NewsCollectionViewController: UICollectionViewController {
+    weak var delegate: NewsDelegate?
+    
     private var viewModels: [NewsViewModel] = []
     private let imageLoader: ImageLoaderProtocol
     private let layout: UICollectionViewFlowLayout
@@ -66,6 +72,10 @@ final class NewsCollectionViewController: UICollectionViewController {
 //        }
         
         return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.didTapOnNews(viewModels[indexPath.item].url)
     }
 }
 

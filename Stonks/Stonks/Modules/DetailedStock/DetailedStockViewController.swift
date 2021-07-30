@@ -1,6 +1,8 @@
 import UIKit
 
 final class DetailedStockViewController: UIViewController {
+    // MARK: - Properties
+    
 	private let output: DetailedStockViewOutput
     
     private lazy var segmentCollectionViewController = SegmentCollectionViewController(viewModels: setupSegmentViewModels())
@@ -22,11 +24,14 @@ final class DetailedStockViewController: UIViewController {
         collectionViewLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         collectionViewLayout.minimumLineSpacing = 18
         let vc = NewsCollectionViewController(viewModels: [], imageLoader: imageLoader, collectionViewLayout: collectionViewLayout)
+        vc.delegate = self
         return vc
     }()
     
     private lazy var childControllersForSegment: [UIViewController] = [newsViewController]
 
+    // MARK: - Lifecycle
+    
     init(output: DetailedStockViewOutput, stock: StockCardViewModel) {
         self.output = output
         self.stock = stock
@@ -52,6 +57,8 @@ final class DetailedStockViewController: UIViewController {
         let selectedIndexPath = IndexPath(item: 0, section: 0)
         segmentCollectionViewController.collectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .centeredHorizontally)
 	}
+    
+    // MARK: - Private
     
     private func setup() {
         setupNavigationBar()
@@ -127,7 +134,7 @@ final class DetailedStockViewController: UIViewController {
     }
     
     private func onTapNews() {
-        output.didTapNews(symbol: stock.symbol)
+        output.didTapNewsSegment(symbol: stock.symbol)
     }
     
     private func configureNewsViewController(viewModels: [NewsViewModel]) {
@@ -149,6 +156,8 @@ final class DetailedStockViewController: UIViewController {
     }
 }
 
+// MARK: - DetailedStockViewInput
+
 extension DetailedStockViewController: DetailedStockViewInput {
     func updateNews(with viewModels: [NewsViewModel]) {
         if let selectedModel = segmentCollectionViewController.selectedViewModel,
@@ -159,6 +168,15 @@ extension DetailedStockViewController: DetailedStockViewInput {
     
     func updateFavorite(isFavorite: Bool) {
         self.isFavorite = isFavorite
+    }
+    
+}
+
+// MARK: -
+
+extension DetailedStockViewController: NewsDelegate {
+    func didTapOnNews(_ newsUrl: String) {
+        output.didTapNewsItem(newsUrl)
     }
     
 }

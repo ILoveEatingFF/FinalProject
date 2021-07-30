@@ -165,7 +165,7 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
 
 extension FeedViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-ex        isSearched ? searchViewModels.count : viewModels.count
+        isSearched ? searchViewModels.count : viewModels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
