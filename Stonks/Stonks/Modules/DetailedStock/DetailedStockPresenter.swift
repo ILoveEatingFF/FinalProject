@@ -9,6 +9,12 @@ final class DetailedStockPresenter {
     
     private var currentShownStockSymbol: String
     
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+        return formatter
+    }()
+    
     init(
         router: DetailedStockRouterInput,
         interactor: DetailedStockInteractorInput,
@@ -43,6 +49,10 @@ extension DetailedStockPresenter: DetailedStockModuleInput {
 }
 
 extension DetailedStockPresenter: DetailedStockViewOutput {
+    func didTapBasicFinancials(symbol: String) {
+        interactor.loadBasicFinancials(symbol: symbol)
+    }
+    
     func didTapNewsItem(_ url: String) {
         router.showNews(with: url)
     }
@@ -58,6 +68,11 @@ extension DetailedStockPresenter: DetailedStockViewOutput {
 }
 
 extension DetailedStockPresenter: DetailedStockInteractorOutput {
+    func didLoadBasicFinancials(_ metric: Metric) {
+        let viewModel = makeBasicFinancialsViewModel(metric)
+        view?.updateBasicFinancials(with: viewModel)
+    }
+    
     func didLoadNews(_ news: [News]) {
         let viewModels = makeNewsViewModels(news)
         view?.updateNews(with: viewModels)
@@ -65,14 +80,29 @@ extension DetailedStockPresenter: DetailedStockInteractorOutput {
 }
 
 private extension DetailedStockPresenter {
+    func makeBasicFinancialsViewModel(_ metric: Metric) -> BasicFinancialsViewModel {
+        BasicFinancialsViewModel(
+            tenDayAverageTradingVolume: "\(metric.tenDayAverageTradingVolume?.roundToDecimal(3) ?? 0)",
+            weekHigh52: "\(metric.weekHigh52?.roundToDecimal(3) ?? 0)",
+            weekLow52: "\(metric.weekLow52?.roundToDecimal(3) ?? 0)",
+            weekPriceReturnDaily52: "\(metric.weekPriceReturnDaily52?.roundToDecimal(3) ?? 0)",
+            marketCapitalization: "\(metric.marketCapitalization?.roundToDecimal(3) ?? 0)",
+            beta: "\(metric.beta?.roundToDecimal(3) ?? 0)"
+        )
+    }
+    
     func makeNewsViewModels(_ news: [News]) -> [NewsViewModel] {
-        news.map {
-            NewsViewModel(
+        news
+            .sorted {$0.datetime ?? 0 > $1.datetime ?? 0}
+            .map {
+            let date = Date.init(milliseconds: $0.datetime ?? 0)
+            return NewsViewModel(
                 headline: $0.headline ?? "",
                 source: $0.source ?? "",
                 url: $0.url ?? "",
                 summary: $0.summary ?? "",
-                image: $0.image ?? "")
+                image: $0.image ?? "",
+                date: dateFormatter.string(from: date))
         }
     }
 }

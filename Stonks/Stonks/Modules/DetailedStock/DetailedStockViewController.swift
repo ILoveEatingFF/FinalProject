@@ -28,7 +28,12 @@ final class DetailedStockViewController: UIViewController {
         return vc
     }()
     
-    private lazy var childControllersForSegment: [UIViewController] = [newsViewController]
+    private lazy var basicFinancialsVC: BasicFinancialsViewController = {
+        let vc = BasicFinancialsViewController()
+        return vc
+    }()
+    
+    private lazy var childControllersForSegment: [UIViewController] = [basicFinancialsVC, newsViewController]
 
     // MARK: - Lifecycle
     
@@ -56,6 +61,7 @@ final class DetailedStockViewController: UIViewController {
 		super.viewDidLoad()
         let selectedIndexPath = IndexPath(item: 0, section: 0)
         segmentCollectionViewController.collectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .centeredHorizontally)
+        self.onTapBasicFinancials()
 	}
     
     // MARK: - Private
@@ -102,11 +108,12 @@ final class DetailedStockViewController: UIViewController {
     
     private func setupSegmentViewModels() -> [SegmentViewModel] {
         var viewModels: [SegmentViewModel] = []
-        let graphViewModel = SegmentViewModel(name: Segments.graph.rawValue) { [weak self] in
+        let graphViewModel = SegmentViewModel(name: Segments.basicFinancials.rawValue) { [weak self] in
             guard let self = self else { return }
             self.childControllersForSegment.forEach {
                 $0.remove()
             }
+            self.onTapBasicFinancials()
         }
         let newsViewModels = SegmentViewModel(name: Segments.news.rawValue) { [weak self] in
             guard let self = self else { return }
@@ -131,6 +138,28 @@ final class DetailedStockViewController: UIViewController {
             object: self,
             userInfo: ["symbol": stock.symbol]
         )
+    }
+    
+    private func onTapBasicFinancials() {
+        output.didTapBasicFinancials(symbol: stock.symbol)
+    }
+    
+    private func configureBasicFinancialsVC(with viewModel: BasicFinancialsViewModel) {
+        basicFinancialsVC.update(with: viewModel)
+        add(basicFinancialsVC)
+        setupBasicFinancialsConstraints(basicFinancialsVC.view)
+    }
+    
+    private func setupBasicFinancialsConstraints(_ view: UIView) {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let safeArea = self.view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: segmentCollectionViewController.view.bottomAnchor, constant: 30),
+            view.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
+            view.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16),
+            view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ])
     }
     
     private func onTapNews() {
@@ -159,6 +188,13 @@ final class DetailedStockViewController: UIViewController {
 // MARK: - DetailedStockViewInput
 
 extension DetailedStockViewController: DetailedStockViewInput {
+    func updateBasicFinancials(with viewModel: BasicFinancialsViewModel) {
+        if let selectedModel = segmentCollectionViewController.selectedViewModel,
+           selectedModel.name == Segments.basicFinancials.rawValue {
+            configureBasicFinancialsVC(with: viewModel)
+        }
+    }
+    
     func updateNews(with viewModels: [NewsViewModel]) {
         if let selectedModel = segmentCollectionViewController.selectedViewModel,
            selectedModel.name == Segments.news.rawValue {
@@ -204,6 +240,6 @@ private extension DetailedStockViewController {
     enum Segments: String {
         case graph = "График"
         case news = "Новости"
-        case forecats = "Прогнозы"
+        case basicFinancials = "Общая информация"
     }
 }

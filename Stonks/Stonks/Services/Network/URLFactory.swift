@@ -80,6 +80,17 @@ enum URLFactory {
         baseComp.queryItems?.append(contentsOf: params)
         return baseComp.url
     }
+    
+    static func basicFinancials(with symbol: String) -> URL? {
+        var baseComp = buildBaseComponents(ofType: .finnhub)
+        baseComp.path = "/api/v1//stock/metric"
+        let params = [
+            URLQueryItem(name: "symbol", value: symbol),
+            URLQueryItem(name: "metric", value: "all")
+        ]
+        baseComp.queryItems?.append(contentsOf: params)
+        return baseComp.url
+    }
 }
 
 

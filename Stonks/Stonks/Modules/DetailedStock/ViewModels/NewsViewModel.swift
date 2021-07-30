@@ -6,4 +6,5 @@ struct NewsViewModel {
     let url: String
     let summary: String
     let image: String
+    let date: String
 }

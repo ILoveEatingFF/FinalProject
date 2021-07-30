@@ -123,8 +123,6 @@ extension FeedInteractor: FeedInteractorInput {
             networkLoad(with: index)
         } else {
             offlineLoad(with: index)
-//             TODO: Добавить функционал, чтобы все данные, которые отображены обновились с
-//            сервера(часть необходимого функционала написал)
             accessibilityService.addOnNetworkAvailableHandler(source: FeedInteractor.identifier) { [weak self] in
                 guard
                     let self = self,

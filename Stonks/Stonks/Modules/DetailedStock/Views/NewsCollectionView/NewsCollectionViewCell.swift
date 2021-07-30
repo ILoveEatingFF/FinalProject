@@ -31,7 +31,6 @@ final class NewsCollectionViewCell: UICollectionViewCell {
     
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
-        label.text = "2021-20-22"
         label.font = UIFont(name: "Helvetica Light", size: 12)
         return label
     }()
@@ -94,6 +93,7 @@ final class NewsCollectionViewCell: UICollectionViewCell {
         sourceLabel.text = viewModel.source
         headlineLabel.text = viewModel.headline
         summaryLabel.text = viewModel.summary
+        dateLabel.text = viewModel.date
         currentImageURL = viewModel.image
     }
     

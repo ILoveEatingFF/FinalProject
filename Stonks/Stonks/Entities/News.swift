@@ -1,7 +1,7 @@
 import Foundation
 
 struct News: Codable {
-//    let datetime: DateInterval?
+    let datetime: TimeInterval?
     let headline: String?
     let source: String?
     let url: String?

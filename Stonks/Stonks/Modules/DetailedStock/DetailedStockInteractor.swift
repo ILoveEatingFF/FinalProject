@@ -31,6 +31,19 @@ final class DetailedStockInteractor {
 }
 
 extension DetailedStockInteractor: DetailedStockInteractorInput {
+    func loadBasicFinancials(symbol: String) {
+        networkService.loadBasicFinancials(with: symbol) { result in
+            switch result {
+            case .success(let metricResponse):
+                DispatchQueue.main.async {
+                    self.output?.didLoadBasicFinancials(metricResponse.metric)
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
     func loadNews(symbol: String, lastNews: Int = 50) {
         networkService.loadNews(with: symbol, lastNews: lastNews) { result in
             switch result {
