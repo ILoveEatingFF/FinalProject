@@ -52,7 +52,8 @@ final class RootCoordinator: BaseCoordinator {
         if let username: String = serviceLocator.userDefaultsService.get(for: DefaultsConstants.currentUserKey),
            let _: String = try? serviceLocator.keychainService.getObject(
             queryItem: GenericPassword(key: KeychainConstants.genericPasswordService, username: username)
-           )
+           ),
+           !CommandLine.arguments.contains(LaunchArgumentsConstants.isUITesting)
         {
             autologin()
         } else {
