@@ -16,6 +16,7 @@ final class FavoritesPresenter {
 	private let interactor: FavoritesInteractorInput
     
     private var shouldReload = false
+    private var currentSearchText = ""
     
     init(router: FavoritesRouterInput, interactor: FavoritesInteractorInput) {
         self.router = router
@@ -43,9 +44,11 @@ extension FavoritesPresenter: FavoritesViewOutput {
     }
     
     func filter(stonks: [StockCardViewModel], with searchText: String) {
+        let trueSearchText = searchText.trimmingCharacters(in: CharacterSet(charactersIn: " \t\n"))
+        currentSearchText = trueSearchText
         var result: [StockCardViewModel] = []
         stonks.forEach {
-            if ($0.symbol.lowercased()).starts(with: searchText) || $0.description.lowercased().starts(with: searchText) {
+            if ($0.symbol.lowercased()).starts(with: searchText) || $0.description.lowercased().starts(with: trueSearchText) {
                 result.append($0)
             }
         }
@@ -73,6 +76,8 @@ extension FavoritesPresenter: FavoritesInteractorOutput {
     func didLoad(with stonks: [StonkDTO]) {
         let viewModels = makeViewModels(from: stonks)
         view?.update(with: viewModels)
+        
+        filter(stonks: viewModels, with: currentSearchText)
     }
     
 }

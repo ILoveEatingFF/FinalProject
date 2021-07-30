@@ -43,7 +43,8 @@ extension FeedPresenter: FeedModuleInput {
 extension FeedPresenter: FeedViewOutput {
     func searchSymbols(_ searchText: String) {
         guard !searchText.isEmpty else { return }
-        interactor.loadStonks(with: searchText)
+        let trueSearchText = searchText.trimmingCharacters(in: CharacterSet(charactersIn: " \t\n"))
+        interactor.loadStonks(with: trueSearchText)
     }
     
     func willViewAppear() {
