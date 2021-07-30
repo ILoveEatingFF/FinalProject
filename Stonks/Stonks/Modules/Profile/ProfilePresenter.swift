@@ -25,6 +25,11 @@ extension ProfilePresenter: ProfileModuleInput {
 }
 
 extension ProfilePresenter: ProfileViewOutput {
+    func getUsername() {
+        let username = interactor.getUsername()
+        view?.updateUsername(username)
+    }
+    
     func onTapLogOut() {
         interactor.logOut()
     }

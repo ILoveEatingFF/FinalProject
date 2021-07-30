@@ -17,14 +17,17 @@ protocol ProfileModuleOutput: class {
 }
 
 protocol ProfileViewInput: class {
+    func updateUsername(_ username: String)
 }
 
 protocol ProfileViewOutput: class {
     func onTapLogOut()
+    func getUsername()
 }
 
 protocol ProfileInteractorInput: class {
     func logOut()
+    func getUsername() -> String
 }
 
 protocol ProfileInteractorOutput: class {

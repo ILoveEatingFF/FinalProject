@@ -18,10 +18,14 @@ final class ProfileInteractor {
 }
 
 extension ProfileInteractor: ProfileInteractorInput {
+    func getUsername() -> String {
+        let username: String? = defaultsService.get(for: DefaultsConstants.currentUserKey)
+        return username ?? ""
+    }
+    
     func logOut() {
         defaultsService.remove(for: DefaultsConstants.currentUserKey)
         output?.didLogOut()
     }
-    
     
 }

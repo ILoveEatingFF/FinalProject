@@ -14,6 +14,7 @@ final class ProfileViewController: UIViewController {
 	private let output: ProfileViewOutput
     
     private let profileImageView = UIImageView(image: UIImage(named: "Profile"))
+    private let usernameLabel = UILabel()
     
     private let exitButton = UIButton(type: .system)
 
@@ -38,10 +39,12 @@ final class ProfileViewController: UIViewController {
 		super.viewDidLoad()
         setup()
         setupConstraints()
+        output.getUsername()
 	}
     
     private func setup() {
         view.addSubview(profileImageView)
+        view.addSubview(usernameLabel)
         setupButton()
     }
     
@@ -54,7 +57,8 @@ final class ProfileViewController: UIViewController {
     
     private func setupConstraints() {
         [exitButton,
-         profileImageView].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+         profileImageView,
+         usernameLabel].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
@@ -62,6 +66,9 @@ final class ProfileViewController: UIViewController {
             profileImageView.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
             profileImageView.heightAnchor.constraint(equalToConstant: 200),
             profileImageView.widthAnchor.constraint(equalToConstant: 230),
+            
+            usernameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 10),
+            usernameLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
             
             exitButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -20),
             exitButton.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor)
@@ -87,6 +94,10 @@ final class ProfileViewController: UIViewController {
 // MARK: - ProfileViewInput
 
 extension ProfileViewController: ProfileViewInput {
+    func updateUsername(_ username: String) {
+        usernameLabel.text = username
+    }
+    
 }
 
 // MARK: - Nested Types
