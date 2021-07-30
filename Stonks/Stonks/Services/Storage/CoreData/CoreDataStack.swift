@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-final class CoreDataStack {
+class CoreDataStack {
     static let shared = CoreDataStack()
     
     lazy var viewContext: NSManagedObjectContext = {

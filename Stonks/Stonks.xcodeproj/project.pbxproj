@@ -84,6 +84,8 @@
 		246E501126B465230000475B /* LaunchArgumentsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246E500826B465170000475B /* LaunchArgumentsConstants.swift */; };
 		246E501626B46A9E0000475B /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246E501526B46A9E0000475B /* LoginPage.swift */; };
 		246E501B26B46B400000475B /* XCUIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246E501A26B46B400000475B /* XCUIApplication+Extension.swift */; };
+		246E502326B478690000475B /* UserDefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246E502226B478680000475B /* UserDefaultsTests.swift */; };
+		246E502926B47D0E0000475B /* MockCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246E502826B47D0E0000475B /* MockCoreDataStack.swift */; };
 		248AE2E926A96CC200D1EFC8 /* StockCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248AE2E826A96CC200D1EFC8 /* StockCardCell.swift */; };
 		248AE2EF26A980D700D1EFC8 /* StockCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248AE2EE26A980D700D1EFC8 /* StockCardViewModel.swift */; };
 		248AE2FA26A9939D00D1EFC8 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248AE2F926A9939D00D1EFC8 /* NetworkService.swift */; };
@@ -217,6 +219,8 @@
 		246E500826B465170000475B /* LaunchArgumentsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchArgumentsConstants.swift; sourceTree = "<group>"; };
 		246E501526B46A9E0000475B /* LoginPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPage.swift; sourceTree = "<group>"; };
 		246E501A26B46B400000475B /* XCUIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIApplication+Extension.swift"; sourceTree = "<group>"; };
+		246E502226B478680000475B /* UserDefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsTests.swift; sourceTree = "<group>"; };
+		246E502826B47D0E0000475B /* MockCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoreDataStack.swift; sourceTree = "<group>"; };
 		248AE2E826A96CC200D1EFC8 /* StockCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockCardCell.swift; sourceTree = "<group>"; };
 		248AE2EE26A980D700D1EFC8 /* StockCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockCardViewModel.swift; sourceTree = "<group>"; };
 		248AE2F926A9939D00D1EFC8 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -445,9 +449,10 @@
 		242FA84926A0510E0000BFF5 /* StonksTests */ = {
 			isa = PBXGroup;
 			children = (
+				246E502726B47CF40000475B /* CoreDataTests */,
 				242FA84C26A0510E0000BFF5 /* Info.plist */,
 				242A31C526A5D5970076843D /* KeychainTests.swift */,
-				246E500326B453FC0000475B /* CoreDataTests.swift */,
+				246E502226B478680000475B /* UserDefaultsTests.swift */,
 			);
 			path = StonksTests;
 			sourceTree = "<group>";
@@ -572,6 +577,15 @@
 				246E4FF426B4352D0000475B /* BasicFinancialsViewController.swift */,
 			);
 			path = BasicFinancialsViewController;
+			sourceTree = "<group>";
+		};
+		246E502726B47CF40000475B /* CoreDataTests */ = {
+			isa = PBXGroup;
+			children = (
+				246E500326B453FC0000475B /* CoreDataTests.swift */,
+				246E502826B47D0E0000475B /* MockCoreDataStack.swift */,
+			);
+			path = CoreDataTests;
 			sourceTree = "<group>";
 		};
 		248AE2ED26A980BF00D1EFC8 /* ViewModels */ = {
@@ -919,9 +933,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				246E502326B478690000475B /* UserDefaultsTests.swift in Sources */,
 				246E500426B453FC0000475B /* CoreDataTests.swift in Sources */,
 				242A31C626A5D5970076843D /* KeychainTests.swift in Sources */,
 				246E501126B465230000475B /* LaunchArgumentsConstants.swift in Sources */,
+				246E502926B47D0E0000475B /* MockCoreDataStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

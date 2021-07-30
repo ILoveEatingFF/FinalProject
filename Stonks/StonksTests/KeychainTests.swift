@@ -22,6 +22,7 @@ class KeychainTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        try super.tearDownWithError()
         try? keychainService.removeAll(queryItem: genericPasswordQueryable)
         genericPasswordQueryable = nil
     }
