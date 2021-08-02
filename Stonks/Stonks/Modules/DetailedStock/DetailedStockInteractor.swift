@@ -44,6 +44,8 @@ extension DetailedStockInteractor: DetailedStockInteractorInput {
         }
     }
     
+//     С сервиса iex может начать кидать ошибку, так как запрос на новости там очень дорогой
+//     и могут закончиться кредиты
     func loadNews(symbol: String, lastNews: Int = 50) {
         networkService.loadNews(with: symbol, lastNews: lastNews) { result in
             switch result {
