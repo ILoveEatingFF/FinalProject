@@ -1,6 +1,6 @@
 import UIKit
 
-protocol NewsDelegate: class {
+protocol NewsDelegate: AnyObject {
     func didTapOnNews(_ newsUrl: String)
 }
 

@@ -9,17 +9,8 @@ class ImageLoader: ImageLoaderProtocol {
     
     private let cachedImages = NSCache<NSURL, UIImage>()
     private var loadingResponses: [NSURL: [(UIImage?) -> Void]] = [:]
-    private let session = URLSession(configuration: .ephemeral)
+    private let session = URLSession(configuration: .default)
     
-    private let queue = DispatchQueue(label: "com.image.loader.lizogub", attributes: .concurrent)
-    
-    private var safeLoadingResponsesGetter: [NSURL: [(UIImage?) -> Void]] {
-        get {
-            queue.sync {
-                self.loadingResponses
-            }
-        }
-    }
     
     typealias Handler = (Data?, URLResponse?, Error?) -> Void
     
@@ -38,15 +29,6 @@ class ImageLoader: ImageLoaderProtocol {
             return
         }
         
-        let status = safeSetNewLoadingResponse(with: nsURL, completion: completion)
-        
-        switch status {
-        case .wasSet:
-            break
-        case .wasAppended:
-            return
-        }
-        
         let handler: Handler = { [weak self] rawData, response, error in
             guard let self = self else {
                 return
@@ -54,7 +36,6 @@ class ImageLoader: ImageLoaderProtocol {
             guard
                 let responseData = rawData,
                 let image = UIImage(data: responseData),
-                let blocks = self.safeLoadingResponsesGetter[nsURL],
                 error == nil
             else {
                 DispatchQueue.main.async {
@@ -64,36 +45,11 @@ class ImageLoader: ImageLoaderProtocol {
             }
             self.cachedImages.setObject(image, forKey: nsURL, cost: responseData.count)
             
-            for block in blocks {
-                DispatchQueue.main.async {
-                    block(image)
-                }
+            DispatchQueue.main.async {
+                completion(image)
             }
-            
         }
         session.dataTask(with: URLRequest(url: url), completionHandler: handler).resume()
         
-    }
-    
-    
-    private func safeSetNewLoadingResponse(with url: NSURL, completion: @escaping (UIImage?) -> Void) -> BlockStatus {
-        queue.sync(flags: .barrier) {
-            if self.loadingResponses[url] != nil {
-                self.loadingResponses[url]!.append(completion)
-                return .wasAppended
-            } else {
-                self.loadingResponses[url] = [completion]
-                return .wasSet
-            }
-        }
-    }
-}
-
-// MARK: - Nested Types
-
-private extension ImageLoader {
-    enum BlockStatus {
-        case wasSet
-        case wasAppended
     }
 }

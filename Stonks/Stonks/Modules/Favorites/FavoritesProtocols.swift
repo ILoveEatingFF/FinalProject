@@ -12,15 +12,15 @@ protocol FavoritesModuleInput {
 	var moduleOutput: FavoritesModuleOutput? { get }
 }
 
-protocol FavoritesModuleOutput: class {
+protocol FavoritesModuleOutput: AnyObject {
 }
 
-protocol FavoritesViewInput: class {
+protocol FavoritesViewInput: AnyObject {
     func update(with viewModels: [StockCardViewModel])
     func updateFiltered(with viewModels: [StockCardViewModel])
 }
 
-protocol FavoritesViewOutput: class {
+protocol FavoritesViewOutput: AnyObject {
     func didLoadView()
     func willViewAppear()
     func onTapFavorite(with symbol: String)
@@ -28,16 +28,16 @@ protocol FavoritesViewOutput: class {
     func filter(stonks: [StockCardViewModel], with searchText: String)
 }
 
-protocol FavoritesInteractorInput: class {
+protocol FavoritesInteractorInput: AnyObject {
     func load()
     func reload()
     func deleteFavorite(with symbol: String)
 }
 
-protocol FavoritesInteractorOutput: class {
+protocol FavoritesInteractorOutput: AnyObject {
     func didLoad(with stonks: [StonkDTO])
 }
 
-protocol FavoritesRouterInput: class {
+protocol FavoritesRouterInput: AnyObject {
     func showDetailedStock(_ stock: StockCardViewModel)
 }

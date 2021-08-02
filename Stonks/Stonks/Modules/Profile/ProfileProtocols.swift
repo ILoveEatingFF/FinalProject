@@ -12,27 +12,27 @@ protocol ProfileModuleInput {
 	var moduleOutput: ProfileModuleOutput? { get }
 }
 
-protocol ProfileModuleOutput: class {
+protocol ProfileModuleOutput: AnyObject {
     func didLogOut()
 }
 
-protocol ProfileViewInput: class {
+protocol ProfileViewInput: AnyObject {
     func updateUsername(_ username: String)
 }
 
-protocol ProfileViewOutput: class {
+protocol ProfileViewOutput: AnyObject {
     func onTapLogOut()
     func getUsername()
 }
 
-protocol ProfileInteractorInput: class {
+protocol ProfileInteractorInput: AnyObject {
     func logOut()
     func getUsername() -> String
 }
 
-protocol ProfileInteractorOutput: class {
+protocol ProfileInteractorOutput: AnyObject {
     func didLogOut()
 }
 
-protocol ProfileRouterInput: class {
+protocol ProfileRouterInput: AnyObject {
 }

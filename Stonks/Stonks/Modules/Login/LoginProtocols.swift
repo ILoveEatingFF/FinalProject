@@ -1,35 +1,35 @@
 import UIKit
 
-protocol LoginModuleInput: class {
+protocol LoginModuleInput: AnyObject {
 	var moduleOutput: LoginModuleOutput? { get }
     func didSignUp(username: String, password: String)
 }
 
-protocol LoginModuleOutput: class {
+protocol LoginModuleOutput: AnyObject {
     func startApp()
     func showSignUp()
 }
 
-protocol LoginViewInput: class {
+protocol LoginViewInput: AnyObject {
     func showSignInError()
     func setUsernameAndPassword(username: String, password: String)
 }
 
-protocol LoginViewOutput: class {
+protocol LoginViewOutput: AnyObject {
     func login(username: String, password: String)
     func signUp()
 }
 
-protocol LoginInteractorInput: class {
+protocol LoginInteractorInput: AnyObject {
     func signIn(username: String, password: String)
 }
 
-protocol LoginInteractorOutput: class {
+protocol LoginInteractorOutput: AnyObject {
     func didSignIn()
     func didNotSignIn()
 }
 
-protocol LoginRouterInput: class {
+protocol LoginRouterInput: AnyObject {
     func push(_ vc: UIViewController, animated: Bool)
     func popToRootVC(animated: Bool )
 }

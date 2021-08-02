@@ -12,15 +12,15 @@ protocol FeedModuleInput {
 	var moduleOutput: FeedModuleOutput? { get }
 }
 
-protocol FeedModuleOutput: class {
+protocol FeedModuleOutput: AnyObject {
 }
 
-protocol FeedViewInput: class {
+protocol FeedViewInput: AnyObject {
     func update(with viewModels: [StockCardViewModel])
     func updateSearch(with viewModels: [StockCardViewModel])
 }
 
-protocol FeedViewOutput: class {
+protocol FeedViewOutput: AnyObject {
     var hasNextPage: Bool { get }
     func didLoadView()
     func willViewAppear()
@@ -30,7 +30,7 @@ protocol FeedViewOutput: class {
     func searchSymbols(_ searchText: String)
 }
 
-protocol FeedInteractorInput: class {
+protocol FeedInteractorInput: AnyObject {
     func load(with index: MarketIndex)
     func loadNext()
     func reloadFavorites()
@@ -38,12 +38,12 @@ protocol FeedInteractorInput: class {
     func loadStonks(with searchText: String)
 }
 
-protocol FeedInteractorOutput: class {
+protocol FeedInteractorOutput: AnyObject {
     func didLoad(_ stonks: [StonkDTO], hasNextPage: Bool)
     func didLoadSearch(_ stonks: [StonkDTO])
     func didEncounterError(_ error: Error)
 }
 
-protocol FeedRouterInput: class {
+protocol FeedRouterInput: AnyObject {
     func showDetailedStock(_ stock: StockCardViewModel)
 }

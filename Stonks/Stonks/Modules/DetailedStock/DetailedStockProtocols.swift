@@ -4,23 +4,23 @@ protocol DetailedStockModuleInput {
 	var moduleOutput: DetailedStockModuleOutput? { get }
 }
 
-protocol DetailedStockModuleOutput: class {
+protocol DetailedStockModuleOutput: AnyObject {
 }
 
-protocol DetailedStockViewInput: class {
+protocol DetailedStockViewInput: AnyObject {
     func updateFavorite(isFavorite: Bool)
     func updateNews(with viewModels: [NewsViewModel])
     func updateBasicFinancials(with viewModel: BasicFinancialsViewModel)
 }
 
-protocol DetailedStockViewOutput: class {
+protocol DetailedStockViewOutput: AnyObject {
     func didTapOnFavorite(symbol: String, isFavorite: Bool)
     func didTapBasicFinancials(symbol: String)
     func didTapNewsSegment(symbol: String)
     func didTapNewsItem(_ url: String)
 }
 
-protocol DetailedStockInteractorInput: class {
+protocol DetailedStockInteractorInput: AnyObject {
     func saveOrDeleteFavorite(symbol: String, isFavorite: Bool)
     func isStockFavorite(with symbol: String) -> Bool
     func loadNews(symbol: String, lastNews: Int)
@@ -28,11 +28,11 @@ protocol DetailedStockInteractorInput: class {
     func loadBasicFinancials(symbol: String)
 }
 
-protocol DetailedStockInteractorOutput: class {
+protocol DetailedStockInteractorOutput: AnyObject {
     func didLoadNews(_ news: [News])
     func didLoadBasicFinancials(_ metric: Metric)
 }
 
-protocol DetailedStockRouterInput: class {
+protocol DetailedStockRouterInput: AnyObject {
     func showNews(with url: String)
 }

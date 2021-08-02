@@ -12,26 +12,26 @@ protocol SignUpModuleInput {
 	var moduleOutput: SignUpModuleOutput? { get }
 }
 
-protocol SignUpModuleOutput: class {
+protocol SignUpModuleOutput: AnyObject {
     func didSignUp(username: String, password: String)
 }
 
-protocol SignUpViewInput: class {
+protocol SignUpViewInput: AnyObject {
     func showErrors(_ errors: [SignUpViewController.Error])
 }
 
-protocol SignUpViewOutput: class {
+protocol SignUpViewOutput: AnyObject {
     func signUp(email: String, login: String, password: String, repeatPassword: String)
 }
 
-protocol SignUpInteractorInput: class {
+protocol SignUpInteractorInput: AnyObject {
     func signUp(username: String, password: String)
     func isUsernameAvailable(_ username: String) -> Bool
 }
 
-protocol SignUpInteractorOutput: class {
+protocol SignUpInteractorOutput: AnyObject {
     func didSignUp(username: String, password: String)
 }
 
-protocol SignUpRouterInput: class {
+protocol SignUpRouterInput: AnyObject {
 }

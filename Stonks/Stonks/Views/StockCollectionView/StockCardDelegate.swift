@@ -1,5 +1,5 @@
 import Foundation
 
-protocol StockCardDelegate: class {
+protocol StockCardDelegate: AnyObject {
     func onTapFavorite(_ cell: StockCardCell, isFavorite: Bool)
 }
