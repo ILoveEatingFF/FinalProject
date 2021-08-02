@@ -57,14 +57,24 @@ extension DetailedStockPresenter: DetailedStockViewOutput {
         router.showNews(with: url)
     }
     
+//     Рекомендовано использовать загрузку по дате, так как апишка по дате не имеет таких сильных
+//    ограничений как апишка по количеству последний новостей
     func didTapNewsSegment(symbol: String) {
-        interactor.loadNews(symbol: symbol, lastNews: 50)
+        loadNews(with: symbol, loadType: .byDate)
     }
     
     func didTapOnFavorite(symbol: String, isFavorite: Bool) {
         interactor.saveOrDeleteFavorite(symbol: symbol, isFavorite: isFavorite)
     }
     
+    private func loadNews(with symbol: String, loadType: NewsLoadType) {
+        switch loadType {
+        case .byDate:
+            interactor.loadNews(symbol: symbol, startDate: Date().monthAgo, endDate: Date())
+        case .byLastCount:
+            interactor.loadNews(symbol: symbol, lastNews: 50)
+        }
+    }
 }
 
 extension DetailedStockPresenter: DetailedStockInteractorOutput {
@@ -95,14 +105,24 @@ private extension DetailedStockPresenter {
         news
             .sorted {$0.datetime ?? 0 > $1.datetime ?? 0}
             .map {
-            let date = Date.init(milliseconds: $0.datetime ?? 0)
-            return NewsViewModel(
-                headline: $0.headline ?? "",
-                source: $0.source ?? "",
-                url: $0.url ?? "",
-                summary: $0.summary ?? "",
-                image: $0.image ?? "",
-                date: dateFormatter.string(from: date))
-        }
+//                let date = Date.init(milliseconds: $0.datetime ?? 0)
+                let date = Date(timeIntervalSince1970: $0.datetime ?? 0)
+                return NewsViewModel(
+                    headline: $0.headline ?? "",
+                    source: $0.source ?? "",
+                    url: $0.url ?? "",
+                    summary: $0.summary ?? "",
+                    image: $0.image ?? "",
+                    date: dateFormatter.string(from: date))
+            }
+    }
+}
+
+// MARK: - Nested types
+
+private extension DetailedStockPresenter {
+    enum NewsLoadType {
+        case byDate
+        case byLastCount
     }
 }

@@ -62,7 +62,7 @@ enum URLFactory {
     
     static func news(symbol: String, startDate: Date, endDate: Date) -> URL? {
         var baseComp = buildBaseComponents(ofType: .finnhub)
-        baseComp.path = "/company-news"
+        baseComp.path = "/api/v1//company-news"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let params = [

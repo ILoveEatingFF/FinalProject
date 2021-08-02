@@ -24,6 +24,7 @@ protocol DetailedStockInteractorInput: class {
     func saveOrDeleteFavorite(symbol: String, isFavorite: Bool)
     func isStockFavorite(with symbol: String) -> Bool
     func loadNews(symbol: String, lastNews: Int)
+    func loadNews(symbol: String, startDate: Date, endDate: Date)
     func loadBasicFinancials(symbol: String)
 }
 

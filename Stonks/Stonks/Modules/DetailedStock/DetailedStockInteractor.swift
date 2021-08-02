@@ -60,6 +60,20 @@ extension DetailedStockInteractor: DetailedStockInteractorInput {
         }
     }
     
+    func loadNews(symbol: String, startDate: Date, endDate: Date) {
+        networkService.loadNews(with: symbol, startDate: startDate, endDate: endDate) { result in
+            switch result {
+            case .success(let news):
+                DispatchQueue.main.async {
+                    self.output?.didLoadNews(news)
+                }
+            case .failure(let error):
+                print(error)
+            }
+            
+        }
+    }
+    
     func isStockFavorite(with symbol: String) -> Bool {
         var result = false
         let favoriteStonks = databaseService.getFavorites(username: currentUser)
