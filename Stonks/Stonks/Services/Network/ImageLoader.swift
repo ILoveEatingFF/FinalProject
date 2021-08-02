@@ -38,7 +38,14 @@ class ImageLoader: ImageLoaderProtocol {
             return
         }
         
-        safeSetNewLoadingResponse(with: nsURL, completion: completion)
+        let status = safeSetNewLoadingResponse(with: nsURL, completion: completion)
+        
+        switch status {
+        case .wasSet:
+            break
+        case .wasAppended:
+            return
+        }
         
         let handler: Handler = { [weak self] rawData, response, error in
             guard let self = self else {
@@ -69,14 +76,24 @@ class ImageLoader: ImageLoaderProtocol {
     }
     
     
-    private func safeSetNewLoadingResponse(with url: NSURL, completion: @escaping (UIImage?) -> Void) {
-        queue.async(flags: .barrier) {
+    private func safeSetNewLoadingResponse(with url: NSURL, completion: @escaping (UIImage?) -> Void) -> BlockStatus {
+        queue.sync(flags: .barrier) {
             if self.loadingResponses[url] != nil {
                 self.loadingResponses[url]!.append(completion)
-                return
+                return .wasAppended
             } else {
                 self.loadingResponses[url] = [completion]
+                return .wasSet
             }
         }
+    }
+}
+
+// MARK: - Nested Types
+
+private extension ImageLoader {
+    enum BlockStatus {
+        case wasSet
+        case wasAppended
     }
 }
