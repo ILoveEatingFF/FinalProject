@@ -23,6 +23,7 @@ final class SignUpViewController: UIViewController {
     private let loginStack = UIStackView()
     private let loginTextField = PaddingTextField()
     private let loginErrorLabel = ErrorLabel()
+    private let loginSymbolsAmountError = ErrorLabel()
     
     private let passwordStack = UIStackView()
     private let passwordTextField = PaddingTextField()
@@ -98,9 +99,11 @@ final class SignUpViewController: UIViewController {
         
         loginStack.addArrangedSubview(loginTextField)
         loginStack.addArrangedSubview(loginErrorLabel)
+        loginStack.addArrangedSubview(loginSymbolsAmountError)
         
         loginTextField.placeholder = Constants.TextField.loginPlaceholder
         loginErrorLabel.text = Constants.ErrorLabel.loginText
+        loginSymbolsAmountError.text = Constants.ErrorLabel.loginAmountText
     }
     
     private func setupPassword() {
@@ -156,6 +159,7 @@ final class SignUpViewController: UIViewController {
     @objc private func onTapSignUp() {
         self.emailErrorLabel.isHidden = true
         self.loginErrorLabel.isHidden = true
+        self.loginSymbolsAmountError.isHidden = true
         self.passwordErrorLabel.isHidden = true
         self.repeatPasswordErrorLabel.isHidden = true
         
@@ -181,6 +185,8 @@ extension SignUpViewController: SignUpViewInput {
                 self.emailErrorLabel.isHidden = false
             case .login:
                 self.loginErrorLabel.isHidden = false
+            case .loginHasLessThanFourSymbols:
+                self.loginSymbolsAmountError.isHidden = false
             case .password:
                 self.passwordErrorLabel.isHidden = false
             case .repeatPassword:
@@ -197,6 +203,7 @@ extension SignUpViewController {
     enum Error {
         case email
         case login
+        case loginHasLessThanFourSymbols
         case password
         case repeatPassword
     }
@@ -219,6 +226,7 @@ private extension SignUpViewController {
             static let loginText: String = "Данный логин уже зарегистрирован"
             static let passwordText: String = "Пароль недействителен. Он должен быть больше 8 символов и содержать 1 большую букву, 1 маленькую и 1 цифру"
             static let repeatPasswordText: String = "Пароли не совпадают"
+            static let loginAmountText = "Логин должен иметь длину больше 4 символов"
         }
         
     }

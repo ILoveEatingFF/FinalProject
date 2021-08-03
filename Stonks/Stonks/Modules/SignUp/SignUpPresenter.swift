@@ -53,6 +53,10 @@ private extension SignUpPresenter {
             errors += [.login]
         }
         
+        if !isLoginHasMoreThanFourSymbols(login) {
+            errors += [.loginHasLessThanFourSymbols]
+        }
+        
         if !isPasswordValid(password) {
             errors += [.password]
         }
@@ -72,6 +76,10 @@ private extension SignUpPresenter {
     
     func isLoginValid(_ login: String) -> Bool {
         return interactor.isUsernameAvailable(login)
+    }
+    
+    func isLoginHasMoreThanFourSymbols(_ login: String) -> Bool {
+        return login.count > 4
     }
     
     func isPasswordValid(_ password: String) -> Bool {
